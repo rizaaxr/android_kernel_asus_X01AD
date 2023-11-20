@@ -1,0 +1,56 @@
+menu "KernelSU"
+
+config KSU
+	tristate "KernelSU function support"
+	default y
+	help
+	  Enable kernel-level root privileges on Android System.
+	  To compile as a module, choose M here: the
+	  module will be called kernelsu.
+
+config KSU_DEBUG
+	bool "KernelSU debug mode"
+	depends on KSU
+	default n
+	help
+	  Enable KernelSU debug mode.
+
+config KSU_ALLOWLIST_WORKAROUND
+	bool "KernelSU Session init keyring workaround"
+	depends on KSU
+	default n
+	help
+	  Enable session keyring init workaround for problematic devices.
+	  Useful for situations where the SU allowlist is not kept after a reboot.
+
+config KSU_CMDLINE
+	bool "Enable KernelSU cmdline"
+	depends on KSU && KSU != m
+	default n
+	help
+	  Enable a cmdline called kernelsu.enabled
+	  Value 1 means enabled, value 0 means disabled.
+
+config KSU_COMPAT_GKI
+	bool "KernelSU Compat for GKI kernels"
+	default y if $(VERSION) >= 5 && $(PATCHLEVEL) >= 1
+	default n
+
+config KSU_MANUAL_HOOK
+	bool "Manual hooking GKI kernels without kprobes"
+	depends on KSU && KSU != m
+	default y if !KSU_COMPAT_GKI || !KPROBES
+	default n
+	help
+	  Hook required KernelSU syscalls with manually-patched function.
+
+config KSU_KPROBES_HOOK
+	bool "Hook required syscalls with KPROBES"
+	depends on KSU && KPROBES
+	default y if KSU_COMPAT_GKI || KSU = m
+	default n if KSU_MANUAL_HOOK
+	default n
+	help
+	  Hook required KernelSU syscalls with Kernel Probes.
+
+endmenu
