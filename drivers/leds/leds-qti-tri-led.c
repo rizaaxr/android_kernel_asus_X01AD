@@ -68,9 +68,6 @@ struct qpnp_led_dev {
 	u8			id;
 	bool			blinking;
 	bool			breathing;
-	/*Huaqin modify by yangliguo at 2018/09/15 begin */
-	int 			led_cust_brightness;
-	/*Huaqin modify by yangliguo at 2018/09/15 end */
 };
 
 struct qpnp_tri_led_chip {
@@ -218,15 +215,11 @@ static int qpnp_tri_led_set(struct qpnp_led_dev *led)
 	}
 
 	if (led->led_setting.blink) {
-		/*Huaqin modify by yangliguo at 2018/09/15 begin */
-		led->cdev.brightness = led->led_cust_brightness;
-		/*Huaqin modify by yangliguo at 2018/09/15 end */
+		led->cdev.brightness = LED_FULL;
 		led->blinking = true;
 		led->breathing = false;
 	} else if (led->led_setting.breath) {
-		/*Huaqin modify by yangliguo at 2018/09/15 begin */
-		led->cdev.brightness = led->led_cust_brightness;
-		/*Huaqin modify by yangliguo at 2018/09/15 end */
+		led->cdev.brightness = LED_FULL;
 		led->blinking = false;
 		led->breathing = true;
 	} else {
@@ -492,14 +485,6 @@ static int qpnp_tri_led_parse_dt(struct qpnp_tri_led_chip *chip)
 		led->label =
 			of_get_property(child_node, "label", NULL) ? :
 							child_node->name;
-		/*Huaqin modify by yangliguo at 2018/09/15 begin */
-		rc=of_property_read_u32(child_node,"qcom,max-brightness", &led->led_cust_brightness);
-		if(rc)
-		{
-			dev_err(chip->dev, "Fail reading max brightness,rc=%d\n",rc);
-			return rc;
-		}
-		/*Huaqin modify by yangliguo at 2018/09/15 end */
 		led->pwm_dev =
 			devm_of_pwm_get(chip->dev, child_node, NULL);
 		if (IS_ERR(led->pwm_dev)) {
