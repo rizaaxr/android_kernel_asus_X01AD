@@ -54,20 +54,6 @@
 	};
 
 	pmi632_3: qcom,pmi632@3 {
-		pmi632_rgb: qcom,leds@d000 {
-			red {
-				qcom,max-brightness = <30>;
-			};
-
-			green {
-				qcom,max-brightness = <2>;
-			};
-
-			blue {
-				qcom,max-brightness = <255>;
-			};
-		};
-
 		flash_led: qcom,leds@d300 {
 			pmi632_flash0: qcom,flash_0 {
 				qcom,max-current = <80>;
