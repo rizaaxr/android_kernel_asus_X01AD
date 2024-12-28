@@ -54,6 +54,12 @@
 	};
 
 	pmi632_3: qcom,pmi632@3 {
+		pmi632_rgb: qcom,leds@d000 {
+			blue {
+				status = "disabled";
+			};
+		};
+
 		flash_led: qcom,leds@d300 {
 			pmi632_flash0: qcom,flash_0 {
 				qcom,max-current = <80>;
