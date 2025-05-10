@@ -298,7 +298,7 @@ static int get_ini_key_value(char *section, char *key, char *value)
 {
 	int i = 0;
 	int ret = -2;
-	int len = 0;
+	int __maybe_unused len = 0;
 
 	len = strlen(key);
 
